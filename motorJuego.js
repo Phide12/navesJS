@@ -9,8 +9,8 @@ function cargarElementos() {
   document.addEventListener('keyup', comprobarInput);
   ctx = canvas.getContext('2d');
   coche1 = new coche(50, 50);
-
-  setInterval(actualizarPantalla, 60);
+  alert("Controles \n flechas - direccion \n barra espaciadora - freno de mano");
+  setInterval(actualizarPantalla, 30);
 }
 
 function actualizarPantalla() {
@@ -20,7 +20,7 @@ function actualizarPantalla() {
 }
 
 function limpiarPantalla() {
-  ctx.fillStyle = 'white';
+  ctx.fillStyle = 'black';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   ctx.fill();
 }
