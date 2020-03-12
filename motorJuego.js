@@ -1,7 +1,11 @@
 addEventListener('DOMContentLoaded', cargarElementos);
 
 var ctx;
+var imagen;
+
 function cargarElementos() {
+  imagen = new Image();
+  imagen.src = 'img/coche.png'
   canvas = document.getElementById('lienzo');
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
@@ -10,7 +14,7 @@ function cargarElementos() {
   ctx = canvas.getContext('2d');
   coche1 = new coche(50, 50);
   alert("Controles \n flechas - direccion \n barra espaciadora - freno de mano");
-  setInterval(actualizarPantalla, 30);
+  setInterval(actualizarPantalla, 60);
 }
 
 function actualizarPantalla() {
@@ -30,7 +34,11 @@ function dibujarCoche() {
     ctx.translate(coche1.centroX, coche1.centroY);
     ctx.rotate(coche1.rotacion);
     ctx.fillStyle = 'red';
-    ctx.fillRect(-coche1.anchura/2, -coche1.altura/2, coche1.anchura, coche1.altura);
+    ctx.moveTo(-coche1.anchura/2, coche1.altura/2);
+    ctx.lineTo(coche1.anchura/2, coche1.altura/2);
+    ctx.lineTo(0, -coche1.altura/2);
+    ctx.fill();
+
     ctx.fillStyle = 'blue';
     ctx.fillRect(-2, -2, 4, 4);
     ctx.fill();

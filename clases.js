@@ -10,9 +10,9 @@ class coche {
     this.cantidadAceleracion = 0;
     this.velX = 0;
     this.velY = 0;
-    this.gradosRotacion = 4;
-    this.velMax = 1000;
-    this.friccion = 20;
+    this.gradosRotacion = 6;
+    this.velMax = 10;
+    this.friccion = 0.25;
     this.rotacion = 3.14;
     this.giroIzquierda = false;
     this.giroDerecha = false;
@@ -32,12 +32,17 @@ class coche {
     this.comprobarAceleracion();
     this.actuarFriccion();
     this.mover();
+    console.log('x: ' + this.velX);
+    console.log('y: ' + this.velY);  
+    console.log('ace: ' + this.cantidadAceleracion);
+      
   }
 
   rotar(grados) {
     if (this.rotacion + grados == 0 || this.rotacion - grados == 0) {
       this.rotacion = 0;
     } else {
+      grados *= (this.cantidadAceleracion/1000);
       let resultado = this.rotacion + (grados * Math.PI / 180);
       if (resultado < 0) {
         resultado += 6.28;
@@ -51,18 +56,17 @@ class coche {
 
   comprobarAceleracion() {
     if (this.estaAcelerando) {
-      if (this.cantidadAceleracion < 96) {
-        this.cantidadAceleracion += 5;
+      if (this.cantidadAceleracion < 1000) {
+        this.cantidadAceleracion += 20;
       }
     } else {
       if (this.cantidadAceleracion > 0) {
-        this.cantidadAceleracion -= 5;
+        this.cantidadAceleracion -= 10;
       }
     }
-    console.log(this.cantidadAceleracion);
     
-    this.aceleracionX = parseInt(Math.sin(this.rotacion) * this.cantidadAceleracion);
-    this.aceleracionY = parseInt(Math.cos(this.rotacion) * this.cantidadAceleracion);
+    this.aceleracionX = Math.sin(this.rotacion) * (this.cantidadAceleracion/1000);
+    this.aceleracionY = Math.cos(this.rotacion) * (this.cantidadAceleracion/1000);
   }
 
   actuarFriccion() {
@@ -96,7 +100,7 @@ class coche {
     this.estaParado = estaParado;
   }
 
-  mover() {
+  mover() {    
     this.velX += this.aceleracionX;
     this.velY += this.aceleracionY;
 
@@ -111,10 +115,9 @@ class coche {
       this.velY = -this.velMax
     }
 
-    this.posicionX += (this.velX / 100);
-    this.posicionY -= (this.velY / 100);
+    this.posicionX += this.velX;
+    this.posicionY -= this.velY;
     this.actualizarCentro();
-
   }
 
   actualizarCentro() {
