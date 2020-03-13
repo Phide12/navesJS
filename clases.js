@@ -61,7 +61,7 @@ class coche {
       }
     } else {
       if (this.cantidadAceleracion > 0) {
-        this.cantidadAceleracion -= 10;
+        this.cantidadAceleracion -= 20;
       }
     }
     

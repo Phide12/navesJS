@@ -14,7 +14,7 @@ function cargarElementos() {
   ctx = canvas.getContext('2d');
   coche1 = new coche(50, 50);
   alert("Controles \n flechas - direccion \n barra espaciadora - freno de mano");
-  setInterval(actualizarPantalla, 60);
+  setInterval(actualizarPantalla, 30);
 }
 
 function actualizarPantalla() {
@@ -30,24 +30,54 @@ function limpiarPantalla() {
 }
 
 function dibujarCoche() {
-    ctx.save();
-    ctx.translate(coche1.centroX, coche1.centroY);
-    ctx.rotate(coche1.rotacion);
-    ctx.fillStyle = 'red';
-    ctx.moveTo(-coche1.anchura/2, coche1.altura/2);
-    ctx.lineTo(coche1.anchura/2, coche1.altura/2);
-    ctx.lineTo(0, -coche1.altura/2);
-    ctx.fill();
+  ctx.save();
+  ctx.beginPath();
+  ctx.translate(coche1.centroX, coche1.centroY);
+  ctx.rotate(coche1.rotacion);
+  ctx.fillStyle = '#00dddd';
+  ctx.moveTo(-coche1.anchura / 2, 0);
+  ctx.lineTo(coche1.anchura / 2, 0);
+  ctx.lineTo(0, -coche1.altura);
+  ctx.lineTo(-coche1.anchura / 2, 0);
+  ctx.fill();
+  ctx.closePath();
 
-    ctx.fillStyle = 'blue';
-    ctx.fillRect(-2, -2, 4, 4);
-    ctx.fill();
-    ctx.restore();
+  ctx.beginPath();
+  ctx.fillStyle = '#00ffff';
+  ctx.moveTo(-coche1.anchura / 2, 0);
+  ctx.lineTo(coche1.anchura / 2, 0);
+  ctx.lineTo(0, -coche1.altura / 3);
+  ctx.fill();
+  ctx.closePath();
+
+  if (coche1.cantidadAceleracion > 0) {
+    dibujarPropulsion();
+  }
+  ctx.restore();
+}
+
+function dibujarPropulsion() {
+  ctx.beginPath();
+  ctx.fillStyle = 'orange';
+  ctx.moveTo(-coche1.anchura / 3, 0);
+  ctx.lineTo(coche1.anchura / 3, 0);
+  ctx.lineTo(0, 30 * coche1.cantidadAceleracion / 1000);
+  ctx.lineTo(-coche1.anchura / 3, 0);
+  ctx.fill();
+  ctx.closePath();
+  ctx.beginPath();
+  ctx.fillStyle = 'yellow';
+  ctx.moveTo(-coche1.anchura / 4, 0);
+  ctx.lineTo(coche1.anchura / 4, 0);
+  ctx.lineTo(0, 10  * coche1.cantidadAceleracion / 1000);
+  ctx.lineTo(-coche1.anchura / 4, 0);
+  ctx.fill();
+  ctx.closePath();
 }
 
 function comprobarInput(evento) {
 
-  let teclaAccion = (evento.type == 'keydown')?true:false;
+  let teclaAccion = (evento.type == 'keydown') ? true : false;
   switch (evento.keyCode) {
     case 39:
       coche1.giroDerecha = teclaAccion;
@@ -56,7 +86,7 @@ function comprobarInput(evento) {
       coche1.giroIzquierda = teclaAccion;
       break;
     case 38:
-      coche1.estaAcelerando = teclaAccion;      
+      coche1.estaAcelerando = teclaAccion;
       break;
   }
 }
