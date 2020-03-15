@@ -10,10 +10,12 @@ class coche {
     this.cantidadAceleracion = 0;
     this.velX = 0;
     this.velY = 0;
-    this.gradosRotacion = 6;
+    this.cantidadRotacion = 0;
+    this.rotacionMaxima = 6;
+    this.rotacion = 3.14;
     this.velMax = 10;
     this.friccion = 0.25;
-    this.rotacion = 3.14;
+
     this.giroIzquierda = false;
     this.giroDerecha = false;
     this.estaAcelerando = false;
@@ -23,26 +25,38 @@ class coche {
   }
 
   comprobarMovimiento() {
-      if (this.giroDerecha && !this.giroIzquierda) {
-        this.rotar(this.gradosRotacion);
-      }
-      if (this.giroIzquierda && !this.giroDerecha) {
-        this.rotar(-this.gradosRotacion);
-      }
+    if (this.giroDerecha && !this.giroIzquierda) {
+      this.alterarRotacion(1);
+    } else if (this.giroIzquierda && !this.giroDerecha) {
+      this.alterarRotacion(-1);
+    } else {
+      this.decelerarRotacion();
+    }
+    this.rotar();
     this.comprobarAceleracion();
     this.actuarFriccion();
     this.mover();
-    console.log('x: ' + this.velX);
-    console.log('y: ' + this.velY);  
-    console.log('ace: ' + this.cantidadAceleracion);
-      
   }
 
-  rotar(grados) {
-    if (this.rotacion + grados == 0 || this.rotacion - grados == 0) {
-      this.rotacion = 0;
-    } else {
-      grados *= (this.cantidadAceleracion/1000);
+  alterarRotacion(grados) {
+    this.cantidadRotacion += grados;
+    if (this.cantidadRotacion > this.rotacionMaxima) {
+      this.cantidadRotacion = this.rotacionMaxima;
+    } else if (this.cantidadRotacion < -this.rotacionMaxima) {
+      this.cantidadRotacion = -this.rotacionMaxima;
+    }
+  }
+  decelerarRotacion() {
+    if (this.cantidadRotacion > 0) {
+      this.cantidadRotacion -= this.friccion;
+    } else if (this.cantidadRotacion < 0) {
+      this.cantidadRotacion += this.friccion;
+    }
+  }
+
+  rotar() {
+    if (this.cantidadRotacion != 0) {
+      let grados = this.cantidadRotacion * (this.cantidadAceleracion / 1000);
       let resultado = this.rotacion + (grados * Math.PI / 180);
       if (resultado < 0) {
         resultado += 6.28;
@@ -64,9 +78,9 @@ class coche {
         this.cantidadAceleracion -= 20;
       }
     }
-    
-    this.aceleracionX = Math.sin(this.rotacion) * (this.cantidadAceleracion/1000);
-    this.aceleracionY = Math.cos(this.rotacion) * (this.cantidadAceleracion/1000);
+
+    this.aceleracionX = Math.sin(this.rotacion) * (this.cantidadAceleracion / 1000);
+    this.aceleracionY = Math.cos(this.rotacion) * (this.cantidadAceleracion / 1000);
   }
 
   actuarFriccion() {
@@ -100,7 +114,7 @@ class coche {
     this.estaParado = estaParado;
   }
 
-  mover() {    
+  mover() {
     this.velX += this.aceleracionX;
     this.velY += this.aceleracionY;
 
