@@ -24,7 +24,7 @@ function actualizarPantalla() {
 }
 
 function limpiarPantalla() {
-  ctx.fillStyle = 'black';
+  ctx.fillStyle = '#000714';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   ctx.fill();
 }

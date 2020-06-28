@@ -16,7 +16,7 @@ class coche {
     this.rotacionMaxima = 6;
     this.rotacion = 3.14;
     this.velMax = 10;
-    this.friccion = 0.25;
+    this.friccion = 0.20;
 
     this.giroIzquierda = false;
     this.giroDerecha = false;
