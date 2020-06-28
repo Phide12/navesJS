@@ -1,19 +1,18 @@
 addEventListener('DOMContentLoaded', cargarElementos);
 
 var ctx;
-var imagen;
 
 function cargarElementos() {
-  imagen = new Image();
-  imagen.src = 'img/coche.png'
   canvas = document.getElementById('lienzo');
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
   document.addEventListener('keydown', comprobarInput);
   document.addEventListener('keyup', comprobarInput);
+  valorAce = document.querySelector('.aceleracion-cantidad .valor');
+  valorEjes = document.querySelector('.aceleracion-ejes .valor-ejes');
+  valorRot = document.querySelector('.rotacion .valor-rot');
   ctx = canvas.getContext('2d');
-  coche1 = new coche(50, 50);
-  alert("Controles \n flechas - direccion \n barra espaciadora - freno de mano");
+  coche1 = new coche(50, 50, window.innerWidth, window.innerHeight);
   setInterval(actualizarPantalla, 30);
 }
 
@@ -21,6 +20,7 @@ function actualizarPantalla() {
   limpiarPantalla();
   dibujarCoche();
   coche1.comprobarMovimiento();
+  actualizarPanel();
 }
 
 function limpiarPantalla() {
@@ -75,17 +75,29 @@ function dibujarPropulsion() {
   ctx.closePath();
 }
 
+function actualizarPanel() {
+  valorEjes.style.top = (coche1.aceleracionY * -50) + 50 + "%";
+  valorEjes.style.left = (coche1.aceleracionX * 50) + 50 + "%";
+  valorAce.style.width = (coche1.cantidadAceleracion / 10) + '%';
+  valorRot.style.transform = 'rotate('+ coche1.rotacion*(180/Math.PI) + 'deg)';
+}
+
 function comprobarInput(evento) {
 
   let teclaAccion = (evento.type == 'keydown') ? true : false;
+  console.log(evento.keyCode);
+  
   switch (evento.keyCode) {
     case 39:
+    case 68:
       coche1.giroDerecha = teclaAccion;
       break;
     case 37:
+    case 65:
       coche1.giroIzquierda = teclaAccion;
       break;
     case 38:
+    case 87:
       coche1.estaAcelerando = teclaAccion;
       break;
   }

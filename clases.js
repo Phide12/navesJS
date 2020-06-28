@@ -1,6 +1,6 @@
 class coche {
 
-  constructor(posicionX, posicionY) {
+  constructor(posicionX, posicionY, maximoX, maximoY) {
     this.altura = 30;
     this.anchura = 20;
     this.posicionX = posicionX;
@@ -10,6 +10,8 @@ class coche {
     this.cantidadAceleracion = 0;
     this.velX = 0;
     this.velY = 0;
+    this.maximoX = maximoX;
+    this.maximoY = maximoY;
     this.cantidadRotacion = 0;
     this.rotacionMaxima = 6;
     this.rotacion = 3.14;
@@ -128,9 +130,22 @@ class coche {
     } else if (this.velY < -this.velMax) {
       this.velY = -this.velMax
     }
-
+    
+    /* comprobar salir del marco */
+    /* hotizontal */
     this.posicionX += this.velX;
+    if (this.posicionX > (this.maximoX + 50)) {
+      this.posicionX -= (this.maximoX + 50);
+    } else if (this.posicionX < -50) {
+      this.posicionX = this.maximoX + 50 + this.posicionX;
+    }
+    /* vertical */
     this.posicionY -= this.velY;
+    if (this.posicionY > (this.maximoY + 50)) {
+      this.posicionY -= (this.maximoY + 50);
+    } else if (this.posicionY < -50) {
+      this.posicionY = this.maximoY + 50 + this.posicionY;
+    }
     this.actualizarCentro();
   }
 
